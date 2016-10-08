@@ -1,0 +1,11 @@
+unalias cp
+echo $CONVIRT_DIR/src/convirt/web/convirt/
+cp -rf setup.py setup.cfg $CONVIRT_DIR/src/convirt/web/convirt/
+ret=$?
+ if [ $ret != 0 ]; then
+    echo "ERROR: copy setup.py and setup.cfg to  $CONVIRT_DIR"
+    return $ret
+fi
+
+
+alias cp='cp -i'
