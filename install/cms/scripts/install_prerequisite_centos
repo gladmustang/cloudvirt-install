@@ -2,6 +2,7 @@
 
 cd ~/mysql
 yum install wget socat perl-ExtUtils-MakeMaker
+yum erase mariadb-libs
 yum localinstall MySQL-server-5.5.50-1.el7.x86_64.rpm
 yum localinstall MySQL-devel-5.5.50-1.el7.x86_64.rpm
 yum localinstall MySQL-client-5.5.50-1.el7.x86_64.rpm
