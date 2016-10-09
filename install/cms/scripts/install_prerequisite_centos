@@ -8,4 +8,6 @@ yum localinstall MySQL-devel-5.5.50-1.el7.x86_64.rpm
 yum localinstall MySQL-client-5.5.50-1.el7.x86_64.rpm
 yum localinstall MySQL-shared-5.5.50-1.el7.x86_64.rpm
 
+mv /etc/init.d/mysql /etc/init.d/mysqld
+cp -rp /usr/share/mysql/my-small.cnf /etc/my.cnf
 
