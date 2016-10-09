@@ -28,7 +28,7 @@ SUDO=""
 
 install_cms_prereq_packages()
 {
-  $SUDO yum install -y openssh-server openssh-clients python-devel xen socat dnsmasq tunctl python-paramiko gcc
+  $SUDO yum install -y openssh-server openssh-clients python-devel xen socat dnsmasq tunctl python-paramiko gcc mysql-devel mysql-server
 }   
 
 
@@ -45,8 +45,8 @@ default-storage-engine=innodb
 # additional setup
 additional_setup_mysql()
 {
-   systemctl start mysqld
-   systemctl enable mysqld
+   service mysqld start
+   chkconfig mysqld on
 
 ###  Automating this is not working because of stty error. 
 ##   TBD: try it with pexpect sometime.
@@ -84,18 +84,18 @@ additional_setup_mysql()
 # service name is different
 restart_mysql()
 {
-   $SUDO systemctl restart mysqld
+   $SUDO service mysqld restart
 }
 # service name is different
 start_mysql()
 {
-   $SUDO systemctl start mysqld
+   $SUDO service mysqld start
 }
 
 # service name is different
 status_mysql()
 {
-   $SUDO systemctl status mysqld
+   $SUDO service mysqld status
 }
 
 
