@@ -1,0 +1,91 @@
+#!/bin/bash
+#
+# Comments to support chkconfig
+# chkconfig: - 98 02
+# description: your_prog_name service script
+#
+# Source function library.
+. /etc/init.d/functions
+
+### Default variables
+prog_name="cloudvirt_sshagentd"
+#prog_path="/usr/bin/${prog_name}"
+pidfile="/var/lib/convirt/identity/${prog_name}.pid"
+#options="-c your_conf_file"
+
+# Check if requirements are met
+#[ -x "${prog_path}" ] || exit 1
+
+RETVAL=0
+
+start(){
+  echo -n $"Starting $prog_name: "
+  if [ -f $pidfile ]; then
+        . $pidfile >/dev/null
+        if ! kill -0 $SSH_AGENT_PID >/dev/null 2>&1; then
+                echo "Stale agent file found. Spawning new agent..."
+                eval `ssh-agent |tee $pidfile`
+                ssh-add /var/lib/convirt/identity/cms_id_rsa
+        fi
+  else
+        echo "Starting ssh-agent..."
+        eval `ssh-agent |tee $pidfile`
+	ssh-add /var/lib/convirt/identity/cms_id_rsa
+  fi
+  RETVAL=$?
+  [ $RETVAL -eq 0 ] && touch /var/lock/subsys/$prog_name
+  return $RETVAL
+}
+
+stop(){
+  echo -n $"Shutting down $prog_name: "
+  if [ -f $pidfile ]; then
+        . $pidfile >/dev/null
+	ssh-agent -k
+  fi
+  RETVAL=$?
+  echo
+  [ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/$prog_name
+  return $RETVAL
+}
+
+restart() {
+  stop
+  start
+}
+
+status() {
+	if [ -f $pidfile ]; then
+        	. $pidfile >/dev/null
+        	if ! kill -0 $SSH_AGENT_PID >/dev/null 2>&1; then
+			echo "$prog_name is stopped"
+		else
+			echo "$prog_name is running ..."
+		fi
+		
+	else
+	   echo '$prog_name is stopped'
+	fi
+
+}
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart)
+    restart
+    ;;
+  status)
+    status
+    RETVAL=$?
+    ;;
+  *)
+    echo $"Usage: $0 {start|stop|restart|status}"
+    RETVAL=1
+esac
+
+exit $RETVAL
