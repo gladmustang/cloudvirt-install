@@ -68,10 +68,3 @@ if [ "$?" != "0" ]; then
    exit 1
 fi
 
-cp -rp $base/cloudvirt_sshagentd /etc/init.d/
-chkconfig cloudvirt_sshagentd on
-service cloudvirt_sshagentd start
-if [ "$?" != "0" ]; then
-   echo "ERROR: setup ssh-agent for cloudvirt."
-   exit 1
-fi
