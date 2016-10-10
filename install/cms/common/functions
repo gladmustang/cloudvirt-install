@@ -270,12 +270,12 @@ success_msg()
 PORT=8081
 cat <<EOF
 
-     ConVirt Management Server (CMS) setup complete.
+     CloudVirt Management Server (CMS) setup complete.
 
      To start CMS, give the following commands.
 
        cd $CONVIRT_DIR 
-       ./convirt-ctl start
+       ./cloudvirt-ctl start
      
      By default the CMS listens on $PORT port. So make sure that your firewall
      allows TCP $PORT port
@@ -283,7 +283,7 @@ cat <<EOF
 
        iptables -I INPUT -p tcp --dport $PORT -j ACCEPT 
  
-      Once done, you should be able to access ConVirt application using 
+      Once done, you should be able to access CloudVirt application using 
         http://$HOSTNAME:$PORT/
      
 
@@ -326,10 +326,10 @@ setup_convirt()
    fi
 
    cd $CONVIRT_DIR
-   ./convirt-ctl setup
+   ./cloudvirt-ctl setup
    ret=$?
    if [ $ret != 0 ]; then
-      echo "ERROR: running convirt-ctl setup."
+      echo "ERROR: running cloudvirt-ctl setup."
       deactivate_env
       return $ret
    fi
