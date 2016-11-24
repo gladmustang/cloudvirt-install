@@ -126,7 +126,8 @@ create_tg2env()
       return $ret
    fi
 
-   easy_install -i http://www.turbogears.org/2.0/downloads/2.0.3/index tg.devtools
+  # easy_install -i http://www.turbogears.org/2.0/downloads/2.0.3/index tg.devtools
+   easy_install tg.devtools-2.0.2.tar.gz
    ret=$?
    if [ $ret != 0 ]; then
       echo "ERROR: installing TG2 (2.0.3)."
